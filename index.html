@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#075ee8">
+<meta name="description" content="Sabí IA — assistente inteligente para aprender, trabalhar, criar e descobrir.">
+<title>Sabí IA — Assistente Inteligente</title>
+
+<style>
+:root{
+  --bg:#eef3fb;
+  --bg-2:#e3ecfa;
+  --surface:#ffffff;
+  --surface-2:#f7faff;
+  --primary:#075ee8;
+  --primary-dark:#0447b3;
+  --primary-soft:#e8f0fe;
+  --text:#0f1e35;
+  --muted:#64748b;
+  --border:#dbe5f3;
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow:0 8px 28px rgba(7,94,232,.10);
+  --shadow-sm:0 2px 10px rgba(7,94,232,.07);
+  --ok:#16a34a;
+  --danger:#dc2626;
+  --warn:#d97706;
+}
+
+*{box-sizing:border-box}
+
+html,body{height:100%}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:linear-gradient(180deg,var(--bg),var(--bg-2));
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+}
+
+/* ---------- Header ---------- */
+header{
+  background:linear-gradient(135deg,var(--primary),#3b82f6);
+  color:#fff;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 18px rgba(7,94,232,.25);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+header h1{
+  font-size:19px;
+  margin:0;
+  font-weight:700;
+  letter-spacing:.2px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.badge{
+  font-size:11px;
+  font-weight:600;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.35);
+  padding:5px 11px;
+  border-radius:999px;
+  backdrop-filter:blur(4px);
+}
+
+/* ---------- Layout ---------- */
+main{
+  max-width:760px;
+  margin:0 auto;
+  padding:18px 15px 40px;
+}
+
+section{
+  background:var(--surface);
+  padding:20px;
+  border-radius:var(--radius);
+  margin-bottom:16px;
+  box-shadow:var(--shadow-sm);
+  border:1px solid rgba(219,229,243,.7);
+}
+
+h2,h3,h4{margin:0 0 12px;line-height:1.3}
+h2{font-size:20px}
+h3{font-size:17px}
+h4{font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+p{margin:0 0 10px}
+hr{border:0;border-top:1px solid var(--border);margin:16px 0}
+
+/* ---------- Form elements ---------- */
+label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted);
+  margin:12px 0 4px;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:13px 14px;
+  margin:6px 0;
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  font-size:15px;
+  font-family:inherit;
+  background:var(--surface-2);
+  color:var(--text);
+  transition:border-color .18s,box-shadow .18s,background .18s;
+}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:var(--primary);
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(7,94,232,.13);
+}
+textarea{resize:vertical;min-height:96px}
+
+button{
+  background:var(--primary);
+  color:#fff;
+  border:0;
+  padding:12px 18px;
+  border-radius:var(--radius-sm);
+  margin:6px 4px 6px 0;
+  font-size:14px;
+  font-weight:600;
+  font-family:inherit;
+  cursor:pointer;
+  transition:transform .12s,background .18s,box-shadow .18s,opacity .18s;
+  box-shadow:0 2px 8px rgba(7,94,232,.22);
+}
+button:hover:not(:disabled){background:var(--primary-dark);transform:translateY(-1px)}
+button:active:not(:disabled){transform:translateY(0)}
+button:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+button:focus-visible{outline:3px solid rgba(7,94,232,.4);outline-offset:2px}
+
+.secondary{background:#64748b;box-shadow:0 2px 8px rgba(100,116,139,.22)}
+.secondary:hover:not(:disabled){background:#475569}
+.danger{background:var(--danger);box-shadow:0 2px 8px rgba(220,38,38,.22)}
+.danger:hover:not(:disabled){background:#b91c1c}
+.ghost{
+  background:transparent;color:var(--primary);
+  border:1.5px solid var(--border);box-shadow:none;
+}
+.ghost:hover:not(:disabled){background:var(--primary-soft);border-color:var(--primary)}
+
+/* ---------- Tabs ---------- */
+.tabs{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:4px 2px 12px;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  white-space:nowrap;
+  background:var(--surface);
+  color:var(--muted);
+  border:1.5px solid var(--border);
+  box-shadow:none;
+  margin:0;
+  padding:10px 16px;
+  font-weight:600;
+}
+.tabs button:hover:not(.active){background:var(--primary-soft);color:var(--primary)}
+.tabs button.active{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+  box-shadow:0 4px 14px rgba(7,94,232,.3);
+}
+
+/* ---------- Messages ---------- */
+#assistantMessages,#messages{
+  height:340px;
+  overflow-y:auto;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  background:var(--surface-2);
+  scroll-behavior:smooth;
+}
+
+.message{
+  background:#fff;
+  border:1px solid var(--border);
+  padding:12px 14px;
+  border-radius:14px 14px 14px 4px;
+  margin:9px 0;
+  overflow-wrap:anywhere;
+  font-size:15px;
+  animation:pop .22s ease-out;
+  box-shadow:0 1px 4px rgba(15,30,53,.04);
+}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.mine{
+  background:linear-gradient(135deg,var(--primary-soft),#dbeafe);
+  border-color:#c7ddff;
+  border-radius:14px 14px 4px 14px;
+}
+
+.message b{display:block;font-size:13px;color:var(--primary);margin-bottom:3px}
+.message p{margin:0;white-space:pre-wrap}
+.message img{max-width:100%;border-radius:10px;margin-top:8px;display:block}
+
+.msg-time{
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  text-align:right;
+}
+
+/* Typing indicator */
+.typing{display:flex;gap:5px;align-items:center;padding:14px}
+.typing span{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--primary);opacity:.4;
+  animation:blink 1.3s infinite;
+}
+.typing span:nth-child(2){animation-delay:.18s}
+.typing span:nth-child(3){animation-delay:.36s}
+@keyframes blink{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+
+/* ---------- Status ---------- */
+.status{
+  font-size:13px;
+  color:var(--muted);
+  margin:8px 0 0;
+  min-height:18px;
+}
+.status.ok{color:var(--ok)}
+.status.err{color:var(--danger)}
+
+/* ---------- Welcome ---------- */
+.welcome{
+  text-align:center;
+  padding:26px 20px;
+  background:linear-gradient(135deg,#ffffff,#f0f6ff);
+}
+.welcome .robot{
+  font-size:58px;
+  line-height:1;
+  display:inline-block;
+  animation:float 3.2s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.welcome h2{margin:12px 0 6px;font-size:21px}
+.welcome p{color:var(--muted);margin:0}
+
+/* ---------- Auth ---------- */
+#auth{
+  max-width:430px;
+  margin:40px auto;
+  padding:30px 26px;
+  box-shadow:var(--shadow);
+}
+#auth h2{text-align:center}
+#auth .sub{text-align:center;color:var(--muted);margin-bottom:18px;font-size:14px}
+.auth-actions{display:flex;gap:8px;flex-wrap:wrap}
+.auth-actions button{flex:1;min-width:120px;margin:6px 0}
+
+/* ---------- Profile ---------- */
+.profile-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+.avatar{
+  width:46px;height:46px;border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),#60a5fa);
+  color:#fff;font-weight:700;font-size:19px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;box-shadow:0 3px 10px rgba(7,94,232,.3);
+}
+.profile-email{font-size:13px;color:var(--muted);word-break:break-all}
+
+/* ---------- Chinese cards ---------- */
+.phrase-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.phrase-card{
+  background:var(--surface-2);
+  border:1.5px solid var(--border);
+  border-radius:12px;
+  padding:12px;
+  cursor:pointer;
+  transition:transform .15s,border-color .18s,background .18s;
+  text-align:center;
+}
+.phrase-card:hover{transform:translateY(-2px);border-color:var(--primary);background:#fff}
+.phrase-card .zh{font-size:24px;font-weight:700;color:var(--primary);display:block}
+.phrase-card .py{font-size:12px;color:var(--muted);display:block;margin-top:3px}
+.phrase-card .pt{font-size:13px;display:block;margin-top:6px;font-weight:600}
+
+.quiz-box{
+  background:var(--primary-soft);
+  border:1.5px solid #c7ddff;
+  border-radius:12px;
+  padding:16px;
+  margin-top:14px;
+}
+.quiz-zh{font-size:38px;font-weight:700;text-align:center;color:var(--primary);margin:6px 0}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.quiz-options button{
+  margin:0;background:#fff;color:var(--text);
+  border:1.5px solid var(--border);box-shadow:none;
+  font-weight:500;
+}
+.quiz-options button:hover:not(:disabled){background:var(--primary-soft);border-color:var(--primary)}
+.quiz-options button.correct{background:#dcfce7;border-color:var(--ok);color:#166534;font-weight:700}
+.quiz-options button.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}
+
+/* ---------- Preview ---------- */
+#chatPreview{
+  max-width:120px;max-height:120px;border-radius:10px;
+  margin-top:8px;display:none;border:1px solid var(--border);
+}
+
+/* ---------- Toasts ---------- */
+#toastHost{
+  position:fixed;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:9999;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  align-items:center;
+  pointer-events:none;
+  width:calc(100% - 32px);
+  max-width:420px;
+}
+.toast{
+  background:#0f1e35;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:500;
+  box-shadow:0 8px 26px rgba(15,30,53,.35);
+  animation:slideUp .28s ease-out;
+  width:100%;
+  text-align:center;
+}
+.toast.ok{background:var(--ok)}
+.toast.err{background:var(--danger)}
+.toast.out{animation:slideDown .28s ease-in forwards}
+@keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes slideDown{to{opacity:0;transform:translateY(14px)}}
+
+/* ---------- Footer ---------- */
+footer{
+  text-align:center;
+  padding:24px 16px 34px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.hidden{display:none!important}
+
+@media (max-width:480px){
+  main{padding:14px 11px 30px}
+  section{padding:16px;border-radius:14px}
+  header h1{font-size:17px}
+  #assistantMessages,#messages{height:290px}
+  .quiz-options{grid-template-columns:1fr}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🤖 Sabí IA</h1>
+  <span class="badge">🌍 Global</span>
+</header>
+
+<main>
+
+  <!-- ================= AUTENTICAÇÃO ================= -->
+  <section id="auth">
+    <h2>🔐 Bem-vindo ao Sabí IA</h2>
+    <p class="sub">Cria a tua conta ou entra para começar.</p>
+
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="o.teu@email.com" autocomplete="email">
+
+    <label for="password">Palavra-passe</label>
+    <input id="password" type="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password">
+
+    <div class="auth-actions">
+      <button id="btnRegister" type="button">Criar conta</button>
+      <button id="btnLogin" type="button">Entrar</button>
+    </div>
+    <button class="ghost" id="btnReset" type="button" style="width:100%;margin-top:4px">Recuperar acesso</button>
+
+    <p id="authStatus" class="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- ================= APLICAÇÃO ================= -->
+  <div id="application" class="hidden">
+
+    <!-- Perfil -->
+    <section>
+      <h3>👤 Meu perfil</h3>
+      <div class="profile-row">
+        <div class="avatar" id="avatar">?</div>
+        <div>
+          <div id="userEmail" class="profile-email">—</div>
+        </div>
+      </div>
+      <label for="profileName">Nome de apresentação</label>
+      <input id="profileName" placeholder="Como queres ser chamado?">
+      <button id="btnSaveProfile" type="button">Guardar perfil</button>
+      <button class="danger" id="btnLogout" type="button">Sair</button>
+      <p id="profileStatus" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- Boas-vindas -->
+    <section class="welcome">
+      <div class="robot">🤖</div>
+      <h2>Olá! Sou o Sabí IA.</h2>
+      <p>Aprender, trabalhar, criar e descobrir — contigo.</p>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Secções do Sabí IA">
+      <button type="button" role="tab" data-tab="assistant" class="active">🤖 Assistente</button>
+      <button type="button" role="tab" data-tab="community">💬 Comunidade</button>
+      <button type="button" role="tab" data-tab="translator">🌍 Tradutor</button>
+      <button type="button" role="tab" data-tab="chinese">🇨🇳 Chinês</button>
+    </div>
+
+    <!-- Assistente -->
+    <section id="assistant">
+      <h3>🤖 Conversar com Sabí</h3>
+
+      <label for="language">Idioma de resposta</label>
+      <select id="language">
+        <option value="pt-PT">Português</option>
+        <option value="en-US">English</option>
+        <option value="fr-FR">Français</option>
+        <option value="es-ES">Español</option>
+        <option value="zh-CN">Chinês</option>
+        <option value="ja-JP">Japonês</option>
+        <option value="ar-SA">Árabe</option>
+        <option value="de-DE">Alemão</option>
+        <option value="it-IT">Italiano</option>
+        <option value="ru-RU">Russo</option>
+      </select>
+
+      <div id="assistantMessages" aria-live="polite">
+        <div class="message">Olá! Sou o Sabí IA 👋<br>Pergunta-me o que quiseres: explicações, ideias, traduções, resumos ou ajuda a estudar.</div>
+      </div>
+
+      <label for="question">A tua mensagem</label>
+      <input id="question" placeholder="Escreve uma mensagem e carrega em Enter..." autocomplete="off">
+
+      <button id="btnSendAssistant" type="button">Enviar ➤</button>
+      <button class="secondary" id="btnVoice" type="button">🎙️ Falar</button>
+      <button class="secondary" id="btnSpeak" type="button">🔊 Ouvir</button>
+      <button class="ghost" id="btnClearAssistant" type="button">🧹 Limpar</button>
+
+      <p id="assistantStatus" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- Comunidade -->
+    <section id="community" class="hidden">
+      <h3>💬 Comunidade Sabí IA</h3>
+      <p class="status">Partilha mensagens e fotografias com outros utilizadores.</p>
+
+      <div id="messages" aria-live="polite"></div>
+
+      <label for="chatText">Mensagem</label>
+      <input id="chatText" placeholder="Escreve uma mensagem..." autocomplete="off">
+
+      <label for="chatImage">Fotografia (opcional, máx. 5 MB)</label>
+      <input id="chatImage" type="file" accept="image/*">
+      <img id="chatPreview" alt="Pré-visualização da imagem">
+
+      <button id="btnSendChat" type="button">Publicar</button>
+      <p id="chatStatus" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- Tradutor -->
+    <section id="translator" class="hidden">
+      <h3>🌍 Tradutor Sabí</h3>
+
+      <label for="source">Idioma de origem</label>
+      <select id="source">
+        <option value="pt">Português</option>
+        <option value="en">Inglês</option>
+        <option value="fr">Francês</option>
+        <option value="es">Espanhol</option>
+        <option value="de">Alemão</option>
+        <option value="it">Italiano</option>
+        <option value="zh">Chinês</option>
+        <option value="ja">Japonês</option>
+        <option value="ar">Árabe</option>
+        <option value="ru">Russo</option>
+      </select>
+
+      <button class="ghost" id="btnSwap" type="button" style="padding:8px 14px;font-size:13px">🔁 Trocar idiomas</button>
+
+      <label for="target">Idioma de destino</label>
+      <select id="target">
+        <option value="en">Inglês</option>
+        <option value="pt">Português</option>
+        <option value="fr">Francês</option>
+        <option value="es">Espanhol</option>
+        <option value="de">Alemão</option>
+        <option value="it">Italiano</option>
+        <option value="zh">Chinês</option>
+        <option value="ja">Japonês</option>
+        <option value="ar">Árabe</option>
+        <option value="ru">Russo</option>
+      </select>
+
+      <label for="translateInput">Texto para traduzir</label>
+      <textarea id="translateInput" placeholder="Escreve ou cola o texto aqui..."></textarea>
+
+      <button id="btnTranslate" type="button">Traduzir 🌍</button>
+
+      <h4 style="margin-top:18px">Resultado</h4>
+      <div class="message" id="translationResult">A tradução aparecerá aqui.</div>
+
+      <button class="secondary" id="btnListenTranslation" type="button">🔊 Ouvir</button>
+      <button class="secondary" id="btnCopyTranslation" type="button">📋 Copiar</button>
+
+      <p id="translateStatus" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- Chinês -->
+    <section id="chinese" class="hidden">
+      <h3>🇨🇳 Professor de Chinês</h3>
+      <p class="status">Toca numa expressão para ouvir a pronúncia.</p>
+
+      <div class="phrase-grid" id="phraseGrid"></div>
+
+      <h4 style="margin-top:22px">🎯 Praticar</h4>
+      <div class="quiz-box">
+        <p style="margin:0;font-size:13px;color:var(--muted);text-align:center">Qual é o significado desta expressão?</p>
+        <div class="quiz-zh" id="quizZh">你好</div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <p id="quizFeedback" class="status" style="text-align:center" role="status" aria-live="polite"></p>
+        <button class="ghost" id="btnNextQuiz" type="button" style="width:100%">Próxima expressão ➤</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>Sabí IA © 2026 — A inteligência que transforma vidas.</footer>
+
+<div id="toastHost" aria-live="polite" aria-atomic="true"></div>
+
+<script type="module">
+
+/* ============================================================
+   IMPORTAÇÕES FIREBASE
+   ============================================================ */
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, signOut,
+  onAuthStateChanged, sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore, collection, addDoc, query,
+  orderBy, onSnapshot, serverTimestamp,
+  doc, setDoc, getDoc, limit
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getStorage, ref, uploadBytes, getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+/* ============================================================
+   CONFIGURAÇÃO
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAbm3rKO6MIHMyDjqlPpXog55ZP2rb5G60",
+  authDomain: "sabiapp-plus.firebaseapp.com",
+  projectId: "sabiapp-plus",
+  storageBucket: "sabiapp-plus.firebasestorage.app",
+  messagingSenderId: "429320781705",
+  appId: "1:429320781705:web:2e0b46ea5085ac03a96b58",
+  measurementId: "G-F4GQG7SZ3Q"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const auth    = getAuth(firebaseApp);
+const db      = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp);
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+let currentUser  = null;
+let unsubscribe  = null;
+let lastResponse = "";
+let aiHistory    = [];
+let aiBusy       = false;
+
+/* ============================================================
+   ATALHOS DOM
+   ============================================================ */
+const $ = id => document.getElementById(id);
+
+const elAuth          = $("auth");
+const elApp           = $("application");
+const elEmail         = $("email");
+const elPassword      = $("password");
+const elAuthStatus    = $("authStatus");
+const elUserEmail     = $("userEmail");
+const elAvatar        = $("avatar");
+const elProfileName   = $("profileName");
+const elProfileStatus = $("profileStatus");
+
+const elAss
